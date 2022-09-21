@@ -17,7 +17,9 @@ let line = [
 
   // Create a polyline using the line coordinates and make the line red.
 L.polyline(line, {
-    color: "yellow"
+    color: "blue", 
+    opacity: .5,
+    dashArray: 4
   }).addTo(map);
 
 
@@ -29,12 +31,12 @@ let cityData = cities;
 //object array can be included here or in a separate file
 
 // Loop through the cities array and create one marker for each city.
-cityData.forEach(function(city) {
-    console.log(city)
-    L.circleMarker(city.location)
-    .bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
-  .addTo(map);
-});
+// cityData.forEach(function(city) {
+//     console.log(city)
+//     L.circleMarker(city.location)
+//     .bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
+//   .addTo(map);
+// });
 
 // MAPBOX: Create the tile layer that will be the background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
