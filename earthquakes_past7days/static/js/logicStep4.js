@@ -1,4 +1,5 @@
-// LOGIC STEP 4 - ADD AN OVERLAY (CONVERT EARTHQUAKE DATA TO OVERLAY TOGGLE)
+// LOGIC STEP 4 - ADD AN OVERLAY (CONVERT EARTHQUAKE DATA SO IT CAN BE TOGGLED ON/OFF)
+// STEPS 13-14
 
 // Add console.log to check to see if our code is working.
 console.log("working");

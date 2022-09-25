@@ -1,4 +1,4 @@
-// LogicStep3 - ADD CONDITIONAL COLORS TO MARKERS AND POPUP INFO  STEPS 7-12
+// LOGIC STEP 5 - ADD A LEGEND TO THE MAP STEPS 15-
 
 // Add console.log to check to see if our code is working.
 console.log("working");
@@ -22,6 +22,8 @@ let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/
  	accessToken: API_KEY
  });
 
+
+
 // 2. BUILD THE BASE LAYER
 // Create a base layer that holds both maps.
 let baseMaps = {
@@ -29,6 +31,15 @@ let baseMaps = {
   "Satellite Streets": satelliteStreets
 };
 
+// 13a. CREATE AN OVERLAY FOR EARTHQUAKES
+// Create the earthquake layer for our map.
+let earthquakes = new L.layerGroup();
+// 13b. DEFINE THE OVERLAY
+// We define an object that contains the overlays.
+// This overlay will be visible all the time.
+let overlays = {
+  Earthquakes: earthquakes
+};
 
 // 3. DEFINE THE DEFAULT SETTINGS OF THE MAP
 // Create the map object with center, zoom level and default layer.
@@ -41,7 +52,11 @@ let map = L.map('mapid', {
 
 // 4. ADD THE TOGGLE LAYER CONTROLS TO THE MAP 
 // Pass our map layers into our layers control and add the layers control to the map.
-L.control.layers(baseMaps).addTo(map);
+
+// 13c. ADD THE OVERLAY TO THE TOGGLE LAYER
+// Then we add a control to the map that will allow the user to change
+// which layers are visible.
+L.control.layers(baseMaps, overlays).addTo(map);
 
 
 // 7. ADD STYLE TO THE MARKERS - COLOR, SIZE, ETC.
@@ -119,5 +134,38 @@ L.geoJSON(data, {
     onEachFeature: function(feature, layer) {
     layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
   }
-}).addTo(map);
+}).addTo(earthquakes);  //14a. REPLACE VARIABLE WITH EARTHQUAKE
+
+//14b. ADD EARTHQUAKE LAYER TO MAP
+earthquakes.addTo(map);
 });
+
+
+// 15. ADD A LEGEND TO THE MAP
+// Create a legend control object.
+let legend = L.control({position: "bottomright"});
+
+// Then add all the details for the legend.
+legend.onAdd = function() {
+  let div = L.DomUtil.create("div", "info legend");
+  const magnitudes = [0, 1, 2, 3, 4, 5];
+  const colors = [
+    "#98ee00",
+    "#d4ee00",
+    "#eecc00",
+    "#ee9c00",
+    "#ea822c",
+    "#ea2c2c"
+  ];
+
+  // Looping through our intervals to generate a label with a colored square for each interval.
+  for (var i = 0; i < magnitudes.length; i++) {
+    console.log(colors[i]);
+    div.innerHTML +=
+      "<i style='background: " + colors[i] + "'></i> " +
+      magnitudes[i] + (magnitudes[i + 1] ? "&ndash;" + magnitudes[i + 1] + "<br>" : "+");
+ }
+  return div;
+};
+
+legend.addTo(map);
